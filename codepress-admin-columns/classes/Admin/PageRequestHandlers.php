@@ -10,7 +10,7 @@ class PageRequestHandlers implements RequestHandlerInterface
     /**
      * @var RequestHandlerInterface[]
      */
-    public static array $handlers = [];
+    public static $handlers;
 
     public static function add_handler(RequestHandlerInterface $handler): void
     {

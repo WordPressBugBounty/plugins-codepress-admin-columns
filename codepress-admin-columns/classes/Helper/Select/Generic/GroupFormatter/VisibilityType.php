@@ -9,9 +9,9 @@ use AC\Helper\Select\Generic\GroupFormatter;
 class VisibilityType implements GroupFormatter
 {
 
-    private ?string $label;
+    private $label;
 
-    public function __construct(?string $label = null)
+    public function __construct(string $label = null)
     {
         if (null === $label) {
             $label = __('Default', 'codepress-admin-columns');

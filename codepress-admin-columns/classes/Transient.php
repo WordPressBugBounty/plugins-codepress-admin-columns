@@ -2,19 +2,25 @@
 
 namespace AC;
 
-use AC\Storage\KeyValue;
+use LogicException;
 
-final class Transient implements Expirable
+class Transient implements Expirable
 {
 
-    protected KeyValue $option;
+    /**
+     * @var Storage\Option
+     */
+    protected $option;
 
-    protected Storage\Timestamp $timestamp;
+    /**
+     * @var Storage\Timestamp
+     */
+    protected $timestamp;
 
     public function __construct(string $key, bool $network_only = false)
     {
         $option_factory = $network_only
-            ? new Storage\SiteOptionFactory()
+            ? new Storage\NetworkOptionFactory()
             : new Storage\OptionFactory();
 
         $this->option = $option_factory->create($key);
@@ -23,7 +29,7 @@ final class Transient implements Expirable
         );
     }
 
-    public function is_expired(?int $timestamp = null): bool
+    public function is_expired(int $timestamp = null): bool
     {
         return $this->timestamp->is_expired($timestamp);
     }
@@ -47,12 +53,19 @@ final class Transient implements Expirable
         $this->timestamp->delete();
     }
 
-    public function save($data, int $expiration): void
+    /**
+     * @param mixed $data
+     * @param int   $expiration Time until expiration in seconds.
+     *
+     * @return bool
+     * @throws LogicException
+     */
+    public function save($data, int $expiration): bool
     {
         // Always store timestamp before option data.
         $this->timestamp->save(time() + $expiration);
 
-        $this->option->save($data);
+        return $this->option->save($data);
     }
 
 }

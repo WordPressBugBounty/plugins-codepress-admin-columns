@@ -2,9 +2,13 @@
 
 namespace AC\Admin;
 
-interface PageFactoryInterface
-{
+use AC\Renderable;
 
-    public function create();
+interface PageFactoryInterface {
+
+	/**
+	 * @return Renderable
+	 */
+	public function create();
 
 }

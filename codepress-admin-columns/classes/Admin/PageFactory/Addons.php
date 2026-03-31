@@ -2,42 +2,38 @@
 
 namespace AC\Admin\PageFactory;
 
+use AC\Admin;
 use AC\Admin\MenuFactoryInterface;
 use AC\Admin\Page;
 use AC\Admin\PageFactoryInterface;
-use AC\Admin\View;
-use AC\AdminColumns;
-use AC\Integration\IntegrationRepository;
+use AC\Asset\Location;
+use AC\IntegrationRepository;
 
 class Addons implements PageFactoryInterface
 {
 
-    protected AdminColumns $plugin;
+    protected $location;
 
-    protected IntegrationRepository $integrations;
+    protected $integrations;
 
-    protected MenuFactoryInterface $menu_factory;
-
-    protected View\MenuFactory $view_menu_factory;
+    protected $menu_factory;
 
     public function __construct(
-        AdminColumns $plugin,
+        Location\Absolute $location,
         IntegrationRepository $integrations,
-        MenuFactoryInterface $menu_factory,
-        View\MenuFactory $view_menu_factory
+        MenuFactoryInterface $menu_factory
     ) {
-        $this->plugin = $plugin;
+        $this->location = $location;
         $this->integrations = $integrations;
         $this->menu_factory = $menu_factory;
-        $this->view_menu_factory = $view_menu_factory;
     }
 
-    public function create(): Page\Addons
+    public function create()
     {
         return new Page\Addons(
-            $this->plugin,
+            $this->location,
             $this->integrations,
-            $this->view_menu_factory->create($this->menu_factory, 'addons')
+            new Admin\View\Menu($this->menu_factory->create('addons'))
         );
     }
 

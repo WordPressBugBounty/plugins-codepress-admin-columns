@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AC\Helper\Select\Generic\GroupFormatter;
 
-use AC\Helper\Network;
 use AC\Helper\Select\Generic\GroupFormatter;
 
 class BlogSite implements GroupFormatter
@@ -34,10 +33,10 @@ class BlogSite implements GroupFormatter
                 $label = sprintf(
                     '%s %s',
                     __('Network Site:', 'codepress-admin-columns'),
-                    Network::create()->get_site_option((int)$site->blog_id, 'blogname')
+                    ac_helper()->network->get_site_option($site->blog_id, 'blogname')
                 );
 
-                if (get_current_blog_id() === (int)$site->blog_id) {
+                if (get_current_blog_id() === $site->blog_id) {
                     $label = sprintf('%s (%s)', $label, __('current', 'codepress-admin-columns'));
                 }
 

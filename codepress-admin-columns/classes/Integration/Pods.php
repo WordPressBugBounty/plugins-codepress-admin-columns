@@ -2,8 +2,9 @@
 
 namespace AC\Integration;
 
+use AC\Integration;
+use AC\ListScreen;
 use AC\Screen;
-use AC\Type\Integration;
 use AC\Type\Url\Site;
 
 final class Pods extends Integration
@@ -15,11 +16,20 @@ final class Pods extends Integration
             'ac-addon-pods',
             __('Pods', 'codepress-admin-columns'),
             'assets/images/addons/pods.png',
-            __(
-                'Show your Pods fields as list table columns. Inline edit field values, filter by any Pod field, and keep your custom content types organized at scale.',
-                'codepress-admin-columns'
+            sprintf(
+                '%s %s',
+                sprintf(
+                    __('Integrates %s with Admin Columns.', 'codepress-admin-columns'),
+                    __('Pods', 'codepress-admin-columns')
+                ),
+                sprintf(
+                    __(
+                        'Display, inline- and bulk-edit, export, smart filter and sort your %s contents on any admin list table.',
+                        'codepress-admin-columns'
+                    ),
+                    __('Pods', 'codepress-admin-columns')
+                )
             ),
-            null,
             new Site(Site::PAGE_ADDON_PODS)
         );
     }
@@ -31,10 +41,19 @@ final class Pods extends Integration
 
     public function show_notice(Screen $screen): bool
     {
-        return in_array($screen->get_id(), [
-            'toplevel_page_pods',
-            'pods-admin_page_pods-settings',
-        ]);
+        return in_array(
+            $screen->get_id(),
+            [
+                'toplevel_page_pods',
+                'pods-admin_page_pods-settings',
+            ],
+            true
+        );
+    }
+
+    public function show_placeholder(ListScreen $list_screen): bool
+    {
+        return true;
     }
 
 }

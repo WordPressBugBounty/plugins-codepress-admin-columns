@@ -10,7 +10,7 @@ class PageNetworkRequestHandler implements RequestHandlerInterface
     /**
      * @var PageFactoryInterface[]
      */
-    private array $factories = [];
+    private $factories;
 
     public function add(string $slug, PageFactoryInterface $factory): self
     {

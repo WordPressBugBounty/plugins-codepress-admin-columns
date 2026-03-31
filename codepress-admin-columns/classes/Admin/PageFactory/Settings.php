@@ -2,41 +2,56 @@
 
 namespace AC\Admin\PageFactory;
 
-use AC\Admin\Asset;
+use AC;
 use AC\Admin\MenuFactoryInterface;
 use AC\Admin\Page;
 use AC\Admin\PageFactoryInterface;
-use AC\Admin\View;
-use AC\AdminColumns;
+use AC\Admin\Section;
+use AC\Asset\Location;
 
 class Settings implements PageFactoryInterface
 {
 
-    protected AdminColumns $plugin;
+    protected $location;
 
-    protected MenuFactoryInterface $menu_factory;
+    protected $menu_factory;
 
-    protected View\MenuFactory $view_menu_factory;
-    private bool $is_pro_active;
+    private $is_acp_active;
+
+    private $edit_button;
 
     public function __construct(
-        AdminColumns $plugin,
+        Location\Absolute $location,
         MenuFactoryInterface $menu_factory,
-        View\MenuFactory $view_menu_factory,
-        bool $is_pro_active = false
+        bool $is_acp_active,
+        AC\Settings\General\EditButton $edit_button
     ) {
-        $this->plugin            = $plugin;
-        $this->menu_factory      = $menu_factory;
-        $this->view_menu_factory = $view_menu_factory;
-        $this->is_pro_active     = $is_pro_active;
+        $this->location = $location;
+        $this->menu_factory = $menu_factory;
+        $this->is_acp_active = $is_acp_active;
+        $this->edit_button = $edit_button;
     }
 
     public function create(): Page\Settings
     {
-        return new Page\Settings(
-            $this->view_menu_factory->create($this->menu_factory, 'settings'),
-            new Asset\Script\SettingsFactory($this->plugin, $this->is_pro_active)
+        $page = new Page\Settings(
+            new AC\Admin\View\Menu($this->menu_factory->create('settings')),
+            $this->location
         );
+
+        $page
+            ->add_section(
+                new Section\General([
+                    new Section\Partial\ShowEditButton($this->edit_button),
+                ])
+            )
+            ->add_section(new Section\Restore(), 40);
+
+        if ( ! $this->is_acp_active) {
+            $page->add_section(new Section\ProCta(), 50);
+        }
+
+        return $page;
     }
 
 }

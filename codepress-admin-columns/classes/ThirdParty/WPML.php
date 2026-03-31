@@ -2,7 +2,6 @@
 
 namespace AC\ThirdParty;
 
-use AC;
 use AC\ListScreenRepository\Storage;
 use AC\Registerable;
 
@@ -12,14 +11,14 @@ use AC\Registerable;
 class WPML implements Registerable
 {
 
-    private Storage $storage;
+    private $storage;
 
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
     }
 
-    public function register(): void
+    function register(): void
     {
         // Display correct flags on the list tables
         add_action('ac/table/list_screen', [$this, 'replace_flags']);
@@ -28,10 +27,10 @@ class WPML implements Registerable
         add_action('init', [$this, 'register_column_labels'], 300);
 
         // Enable the WPML translation of column headings
-        add_filter('ac/column/heading/label', [$this, 'register_translated_label'], 100);
+        add_filter('ac/headings/label', [$this, 'register_translated_label'], 100);
     }
 
-    public function replace_flags(): void
+    public function replace_flags()
     {
         if ( ! class_exists('SitePress', false)) {
             return;
@@ -71,17 +70,8 @@ class WPML implements Registerable
         }
 
         foreach ($this->storage->find_all() as $list_screen) {
-            /**
-             * @var AC\Column $column
-             */
             foreach ($list_screen->get_columns() as $column) {
-                $setting = $column->get_setting('label');
-
-                if ( ! $setting) {
-                    continue;
-                }
-
-                $label = $setting->get_input()->get_value();
+                $label = $column->get_custom_label();
 
                 do_action(
                     'wpml_register_single_string',
@@ -96,13 +86,7 @@ class WPML implements Registerable
     public function register_translated_label($label)
     {
         if (defined('ICL_LANGUAGE_CODE')) {
-            $label = apply_filters(
-                'wpml_translate_single_string',
-                $label,
-                'Admin Columns',
-                $label,
-                constant('ICL_LANGUAGE_CODE')
-            );
+            $label = apply_filters('wpml_translate_single_string', $label, 'Admin Columns', $label, ICL_LANGUAGE_CODE);
         }
 
         return $label;

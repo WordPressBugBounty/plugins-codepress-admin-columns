@@ -7,33 +7,21 @@ namespace AC\Type;
 class Uri implements Url
 {
 
-    protected string $url;
+    private $url;
 
     public function __construct(string $url)
     {
         $this->url = $url;
     }
 
-    public function with_arg(string $key, string $value): self
-    {
-        return new self(
-            add_query_arg($key, $value, $this->url)
-        );
-    }
-
-    protected function add(string $key, string $value): void
+    protected function add_arg(string $key, string $value): void
     {
         $this->url = add_query_arg($key, $value, $this->url);
     }
 
-    protected function add_path(string $path): void
+    public function with_arg(string $key, string $value): self
     {
-        $this->url = sprintf('%s/%s/', rtrim($this->url, '/'), trim($path, '/'));
-    }
-
-    protected function add_fragment(string $fragment): void
-    {
-        $this->url = sprintf('%s#%s', $this->url, $fragment);
+        return new self(add_query_arg($key, $value, $this->url));
     }
 
     public function get_url(): string
@@ -43,7 +31,7 @@ class Uri implements Url
 
     public function __toString(): string
     {
-        return $this->get_url();
+        return $this->url;
     }
 
 }

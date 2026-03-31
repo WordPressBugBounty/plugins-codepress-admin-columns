@@ -9,17 +9,17 @@ use AC\ListScreenCollection;
 use AC\ListScreenRepository;
 use AC\ListScreenRepositoryWritable;
 use AC\Type\ListScreenId;
-use AC\Type\ListScreenStatus;
-use AC\Type\TableId;
 use LogicException;
 
-final class Storage extends Base implements ListScreenRepositoryWritable
+final class Storage implements ListScreenRepositoryWritable
 {
+
+    use ListScreenRepositoryTrait;
 
     /**
      * @var Storage\ListScreenRepository[]
      */
-    private array $repositories = [];
+    private $repositories = [];
 
     /**
      * @return Storage\ListScreenRepository[]
@@ -40,17 +40,6 @@ final class Storage extends Base implements ListScreenRepositoryWritable
         $this->repositories = array_reverse($repositories);
     }
 
-    public function with_repository(string $name, ListScreenRepository\Storage\ListScreenRepository $repository): self
-    {
-        $repositories = $this->get_repositories();
-        $repositories[$name] = $repository;
-
-        $storage = new self();
-        $storage->set_repositories($repositories);
-
-        return $storage;
-    }
-
     public function has_repository($key): bool
     {
         return array_key_exists($key, $this->repositories);
@@ -65,7 +54,7 @@ final class Storage extends Base implements ListScreenRepositoryWritable
         return $this->repositories[$key];
     }
 
-    public function find(ListScreenId $id): ?ListScreen
+    protected function find_from_source(ListScreenId $id): ?ListScreen
     {
         foreach ($this->repositories as $repository) {
             $list_screen = $repository->get_list_screen_repository()->find($id);
@@ -80,7 +69,7 @@ final class Storage extends Base implements ListScreenRepositoryWritable
         return null;
     }
 
-    public function find_all(?Sort $sort = null): ListScreenCollection
+    protected function find_all_from_source(): ListScreenCollection
     {
         $collection = new ListScreenCollection();
 
@@ -94,22 +83,15 @@ final class Storage extends Base implements ListScreenRepositoryWritable
             }
         }
 
-        return $this->sort($collection, $sort);
+        return $collection;
     }
 
-    public function find_all_by_table_id(
-        TableId $table_id,
-        ?Sort $sort = null,
-        ?ListScreenStatus $status = null
-    ): ListScreenCollection {
+    protected function find_all_by_key_from_source(string $key): ListScreenCollection
+    {
         $collection = new ListScreenCollection();
 
         foreach ($this->repositories as $repository) {
-            $list_screens = $repository
-                ->get_list_screen_repository()
-                ->find_all_by_table_id($table_id, null, $status);
-
-            foreach ($list_screens as $list_screen) {
+            foreach ($repository->get_list_screen_repository()->find_all_by_key($key) as $list_screen) {
                 if ( ! $collection->contains($list_screen)) {
                     $list_screen->set_read_only(! $repository->is_writable());
 
@@ -118,7 +100,7 @@ final class Storage extends Base implements ListScreenRepositoryWritable
             }
         }
 
-        return $this->sort($collection, $sort);
+        return $collection;
     }
 
     public function save(ListScreen $list_screen): void
@@ -157,8 +139,9 @@ final class Storage extends Base implements ListScreenRepositoryWritable
 
             if ($repository->has_rules()) {
                 $match = $repository->get_rules()->match([
-                    Rule::ID   => $list_screen->get_id(),
-                    Rule::TYPE => (string)$list_screen->get_table_id(),
+                    Rule::ID    => $list_screen->has_id() ? $list_screen->get_id() : null,
+                    Rule::TYPE  => $list_screen->get_key(),
+                    Rule::GROUP => $list_screen->get_group(),
                 ]);
             }
 

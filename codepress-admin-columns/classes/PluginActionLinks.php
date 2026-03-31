@@ -8,9 +8,9 @@ use AC\Type\Url\Editor;
 class PluginActionLinks implements Registerable
 {
 
-    private AdminColumns $plugin;
+    private $plugin;
 
-    public function __construct(AdminColumns $plugin)
+    public function __construct(Entity\Plugin $plugin)
     {
         $this->plugin = $plugin;
     }

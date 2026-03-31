@@ -5,9 +5,9 @@ namespace AC\Admin;
 abstract class HelpTab
 {
 
-    private string $id;
+    private $id;
 
-    private string $title;
+    private $title;
 
     public function __construct(string $id, string $title)
     {

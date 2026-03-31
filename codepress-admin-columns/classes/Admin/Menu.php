@@ -2,22 +2,20 @@
 
 namespace AC\Admin;
 
-use AC\Admin\Type\MenuItem;
-
 class Menu
 {
 
     /**
-     * @var MenuItem[]
+     * @var Menu\Item[]
      */
-    private array $items;
+    private $items;
 
     public function __construct(array $items = [])
     {
         array_map([$this, 'add_item'], $items);
     }
 
-    public function add_item(Type\MenuItem $item): Menu
+    public function add_item(Menu\Item $item): Menu
     {
         $this->items[$item->get_slug()] = $item;
 
@@ -36,7 +34,7 @@ class Menu
         return $this->items;
     }
 
-    public function get_item_by_slug(string $slug): ?Type\MenuItem
+    public function get_item_by_slug(string $slug): ?Menu\Item
     {
         return $this->items[$slug] ?? null;
     }

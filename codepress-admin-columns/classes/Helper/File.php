@@ -2,28 +2,48 @@
 
 namespace AC\Helper;
 
-class File extends Creatable
-{
+class File {
 
-    public function get_readable_filesize(int $bytes, int $decimals = 2, string $fallback = ''): string
-    {
-        if ($bytes <= 0) {
-            return '';
-        }
+	/**
+	 * Convert file size to readable format
+	 *
+	 * @param      $bytes
+	 * @param int  $decimals
+	 * @param bool $empty_text
+	 *
+	 * @return string|false Readable file size
+	 * @since 1.4.5
+	 */
+	public function get_readable_filesize( $bytes, $decimals = 2, $empty_text = false ) {
 
-        $filesize_units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		$filesize = $this->get_readable_filesize_as_array( $bytes, $decimals );
 
-        $i = (int)floor(log($bytes, 1024));
+		if ( ! $filesize ) {
+			return $empty_text;
+		}
 
-        $filesize = round($bytes / pow(1024, $i), $decimals);
+		return implode( ' ', $filesize );
+	}
 
-        $unit = $filesize_units[$i] ?? null;
+	/**
+	 * @param string $bytes
+	 * @param int    $decimals
+	 *
+	 * @return array [ string $size, string $unit ]
+	 */
+	public function get_readable_filesize_as_array( $bytes, $decimals = 2 ) {
+		if ( ! $bytes ) {
+			return [];
+		}
 
-        if ( ! $filesize || ! $unit) {
-            return $fallback;
-        }
+		$filesize_units = [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ];
 
-        return sprintf('%s %s', $filesize, $unit);
-    }
+		$i = (int) floor( log( $bytes, 1024 ) );
+
+		return [
+			round( $bytes / pow( 1024, $i ), $decimals ),
+			$filesize_units[ $i ],
+		];
+	}
 
 }

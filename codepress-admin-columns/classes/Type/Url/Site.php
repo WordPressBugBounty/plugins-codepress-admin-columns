@@ -4,10 +4,13 @@ namespace AC\Type\Url;
 
 use AC\Type;
 
-class Site extends Type\Uri
+class Site implements Type\Url
 {
 
-    public const PAGE_CHANGELOG = '/changelog';
+    use Path;
+
+    public const URL = 'https://www.admincolumns.com';
+
     public const PAGE_PRICING = '/pricing-purchase';
     public const PAGE_ABOUT_PRO = '/admin-columns-pro';
     public const PAGE_ACCOUNT_SUBSCRIPTIONS = '/my-account/subscriptions';
@@ -22,42 +25,22 @@ class Site extends Type\Uri
     public const PAGE_ADDON_TOOLSET_TYPES = '/toolset-types';
     public const PAGE_ADDON_WOOCOMMERCE = '/woocommerce-columns';
     public const PAGE_ADDON_YOAST_SEO = '/yoast-seo';
-    public const PAGE_ADDON_RANK_MATH = '/rank-math';
-    public const PAGE_ADDON_SEOPRESS = '/seo-press';
-    public const PAGE_SUPPORT = '/documentation';
 
-    public function __construct(?string $path = null)
+    public function __construct(string $path = null)
     {
-        parent::__construct('https://www.admincolumns.com');
-
         if ($path) {
-            $this->add_path($path);
+            $this->set_path($path);
         }
     }
 
-    public static function create_pricing(): self
+    public function get_url(): string
     {
-        return new self(self::PAGE_PRICING);
+        return self::URL . $this->get_path();
     }
 
-    public static function create_admin_columns_pro(): self
+    public function __toString(): string
     {
-        return new self(self::PAGE_ABOUT_PRO);
-    }
-
-    public static function create_support(): self
-    {
-        return new self(self::PAGE_SUPPORT);
-    }
-
-    public static function create_changelog(): self
-    {
-        return new self(self::PAGE_CHANGELOG);
-    }
-
-    public static function create_account(): self
-    {
-        return new self(self::PAGE_ACCOUNT_SUBSCRIPTIONS);
+        return $this->get_url();
     }
 
 }

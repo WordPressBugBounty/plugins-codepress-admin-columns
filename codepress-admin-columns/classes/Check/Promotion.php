@@ -6,22 +6,22 @@ use AC\Ajax;
 use AC\Capabilities;
 use AC\Message\Notice\Dismissible;
 use AC\Preferences;
-use AC\Preferences\UserFactory;
+use AC\Promo;
 use AC\Registerable;
 use AC\Screen;
-use AC\Type\Promo;
 
-final class Promotion implements Registerable
+final class Promotion
+    implements Registerable
 {
 
-    private Promo $promo;
+    /**
+     * @var Promo
+     */
+    private $promo;
 
-    private UserFactory $preferences_factory;
-
-    public function __construct(Promo $promo, UserFactory $preferences_factory)
+    public function __construct(Promo $promo)
     {
         $this->promo = $promo;
-        $this->preferences_factory = $preferences_factory;
     }
 
     public function register(): void
@@ -31,7 +31,10 @@ final class Promotion implements Registerable
         $this->get_ajax_handler()->register();
     }
 
-    private function get_ajax_handler(): Ajax\Handler
+    /**
+     * @return Ajax\Handler
+     */
+    private function get_ajax_handler()
     {
         $handler = new Ajax\Handler();
 
@@ -42,42 +45,42 @@ final class Promotion implements Registerable
         return $handler;
     }
 
-    private function get_individual_slug(): string
+    private function get_individual_slug()
     {
         return $this->promo->get_slug() . $this->promo->get_date_range()->get_start()->format('Ymd');
     }
 
-    private function get_preferences(): Preferences\Preference
+    /**
+     * @return Preferences\User
+     */
+    private function get_preferences()
     {
-        return $this->preferences_factory->create(
-            'check-promo-' . $this->get_individual_slug()
-        );
+        return new Preferences\User('check-promo-' . $this->get_individual_slug());
     }
 
-    public function ajax_dismiss_notice(): void
+    /**
+     * Dismiss notice
+     */
+    public function ajax_dismiss_notice()
     {
         $this->get_ajax_handler()->verify_request();
-        $this->get_preferences()->save('dismiss-notice', true);
+        $this->get_preferences()->set('dismiss-notice', true);
     }
 
-    private function is_promo_screen(Screen $screen): bool
+    /**
+     * @param Screen $screen
+     */
+    public function display(Screen $screen)
     {
-        return $screen->has_screen() && ($screen->is_table_screen() || $screen->is_admin_screen());
-    }
-
-    public function display(Screen $screen): void
-    {
-        if ( ! current_user_can(Capabilities::MANAGE) ||
-             ! $this->is_promo_screen($screen) ||
-             $this->get_preferences()->find('dismiss-notice')
+        if ( ! $this->promo->is_active()
+             || ! current_user_can(Capabilities::MANAGE)
+             || ! $screen->is_list_screen()
+             || $this->get_preferences()->get('dismiss-notice')
         ) {
             return;
         }
 
-        $notice = new Dismissible(
-            $this->promo->get_notice_message(),
-            $this->get_ajax_handler()
-        );
+        $notice = new Dismissible($this->promo->get_message(), $this->get_ajax_handler());
         $notice->register();
     }
 }

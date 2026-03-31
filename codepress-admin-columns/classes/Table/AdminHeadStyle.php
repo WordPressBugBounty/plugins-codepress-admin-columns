@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace AC\Table;
 
-use AC\Helper;
 use AC\Registerable;
 use InvalidArgumentException;
 
 class AdminHeadStyle implements Registerable
 {
 
-    private static array $style_blocks = [];
+    private static $style_blocks = [];
 
     public function register(): void
     {
@@ -20,8 +19,8 @@ class AdminHeadStyle implements Registerable
 
     public static function add(string $style_block): void
     {
-        if ( ! Helper\Strings::create()->starts_with($style_block, '<style>') ||
-             ! Helper\Strings::create()->ends_with($style_block, '</style>')) {
+        if ( ! ac_helper()->string->starts_with($style_block, '<style>') ||
+             ! ac_helper()->string->ends_with($style_block, '</style>')) {
             throw new InvalidArgumentException('Block needs to be wrapped in "style" tags');
         }
 

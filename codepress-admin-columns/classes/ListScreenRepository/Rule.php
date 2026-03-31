@@ -2,13 +2,17 @@
 
 namespace AC\ListScreenRepository;
 
-interface Rule
-{
+interface Rule {
 
-    public const TYPE = 'type';
-    public const ID = 'id';
-    public const GROUP = 'group';
+	const TYPE = 'type';
+	const ID = 'id';
+	const GROUP = 'group';
 
-    public function match(array $args): bool;
+	/**
+	 * @param array $args
+	 *
+	 * @return bool
+	 */
+	public function match( array $args );
 
 }

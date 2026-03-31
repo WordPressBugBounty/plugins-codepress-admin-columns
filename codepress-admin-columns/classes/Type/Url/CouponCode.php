@@ -8,11 +8,13 @@ use AC\Type\Url;
 class CouponCode extends Uri
 {
 
+    private const ARG_COUPON = 'coupon_code';
+
     public function __construct(Url $url, string $coupon_code)
     {
         parent::__construct($url->get_url());
 
-        $this->add('coupon_code', $coupon_code);
+        $this->add_arg(self::ARG_COUPON, $coupon_code);
     }
 
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace AC\Admin\Colors\Type;
@@ -9,9 +8,9 @@ use InvalidArgumentException;
 final class Color
 {
 
-    private string $color;
+    private $color;
 
-    private string $name;
+    private $name;
 
     public function __construct(string $color, string $name)
     {

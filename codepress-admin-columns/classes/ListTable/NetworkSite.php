@@ -8,20 +8,20 @@ use WP_MS_Sites_List_Table;
 class NetworkSite implements ListTable
 {
 
-    private WP_MS_Sites_List_Table $table;
+    use WpListTableTrait;
 
     public function __construct(WP_MS_Sites_List_Table $table)
     {
         $this->table = $table;
     }
 
-    public function render_cell(string $column_id, $row_id): string
+    public function get_column_value(string $column, $id): string
     {
         ob_start();
 
-        $method = 'column_' . $column_id;
+        $method = 'column_' . $column;
 
-        $blog = get_site($row_id);
+        $blog = get_site($id);
 
         if ( ! $blog) {
             return '';
@@ -30,7 +30,7 @@ class NetworkSite implements ListTable
         if (method_exists($this->table, $method)) {
             call_user_func([$this->table, $method], $blog->to_array());
         } else {
-            $this->table->column_default($blog->to_array(), $column_id);
+            $this->table->column_default($blog->to_array(), $column);
         }
 
         return ob_get_clean();
@@ -38,15 +38,8 @@ class NetworkSite implements ListTable
 
     public function render_row($id): string
     {
-        $site = get_site($id);
-
-        if ( ! $site) {
-            return '';
-        }
-
         ob_start();
-
-        $this->table->single_row($site);
+        $this->table->single_row(get_site($id));
 
         return ob_get_clean();
     }

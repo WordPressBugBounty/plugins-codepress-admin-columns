@@ -5,12 +5,12 @@ namespace AC\Helper\Select;
 final class OptionGroup
 {
 
-    private string $label;
+    private $label;
 
     /**
      * @var Option[]
      */
-    private array $options = [];
+    private $options;
 
     /**
      * @param string   $label

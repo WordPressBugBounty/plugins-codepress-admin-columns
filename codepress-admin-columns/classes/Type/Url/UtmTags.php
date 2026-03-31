@@ -8,43 +8,38 @@ use AC\Type\Url;
 class UtmTags extends Uri
 {
 
-    private ?string $medium;
+    public const ARG_SOURCE = 'utm_source';
+    public const ARG_MEDIUM = 'utm_medium';
+    public const ARG_CONTENT = 'utm_content';
+    public const ARG_CAMPAIGN = 'utm_campaign';
 
-    private ?string $content;
-
-    private ?string $campaign;
-
-    public function __construct(Url $url, ?string $medium = null, ?string $content = null, ?string $campaign = null)
+    public function __construct(Url $url, string $medium = null, string $content = null, string $campaign = null)
     {
-        parent::__construct((string)$url);
+        parent::__construct($url->get_url());
 
-        $this->add('utm_source', 'plugin-installation');
+        $this->add_arg(self::ARG_SOURCE, 'plugin-installation');
 
-        $this->medium = $medium;
-        $this->content = $content;
-        $this->campaign = $campaign;
+        if ($medium) {
+            $this->add_arg(self::ARG_MEDIUM, $medium);
+        }
+
+        if ($content) {
+            $this->add_arg(self::ARG_CONTENT, $content);
+        }
+
+        if ($campaign) {
+            $this->add_arg(self::ARG_CAMPAIGN, $campaign);
+        }
     }
 
-    public function get_url(): string
+    public function add_medium(string $medium): self
     {
-        $url = parent::get_url();
-
-        if ($this->medium) {
-            $url = add_query_arg('utm_medium', $this->medium, $url);
-        }
-        if ($this->content) {
-            $url = add_query_arg('utm_content', $this->content, $url);
-        }
-        if ($this->campaign) {
-            $url = add_query_arg('utm_campaign', $this->campaign, $url);
-        }
-
-        return $url;
+        return new self($this, $medium);
     }
 
-    public function with_content(string $content): self
+    public function add_content(string $content): self
     {
-        return new self($this, $this->medium, $content, $this->campaign);
+        return new self($this, null, $content);
     }
 
 }
