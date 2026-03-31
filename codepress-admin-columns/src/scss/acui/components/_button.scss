@@ -1,0 +1,120 @@
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.acui-button {
+	border: 1px solid #616D77;
+	position: relative;
+	background: transparent;
+	border-radius: 4px;
+	padding: 10px 15px;
+	color: #1E293B;
+	cursor: pointer;
+	text-decoration: none;
+	line-height: 18px;
+
+
+	&.-disabled {
+		border-color: #C4C4C4 !important;
+		background: #E6E6E6 !important;
+		color: #aaa !important;
+	}
+
+	&:disabled {
+		cursor: not-allowed !important;
+	}
+
+	&.-small {
+		padding-top: 6px;
+		padding-bottom: 6px;
+	}
+
+}
+
+a.acui-button {
+	box-sizing: border-box;
+}
+
+.acui-button.acui-button-text {
+	border-color: transparent;
+	background: transparent;
+}
+
+.acui-button .acui-icon .dashicons {
+	transform: translateY(-2px);
+}
+
+.acui-button :global(.acui-icon),
+.acui-button .dashicons {
+	transform: translateY(-2px);
+}
+
+.acui-button.-destructive {
+	color: var(--ac-notification-red);
+
+	&:hover {
+		filter: saturate(0.5);
+	}
+}
+
+.acui-button.is-loading {
+	color: transparent !important;
+
+}
+
+.acui-button.is-loading:before {
+	border: 2px solid var(--acui-loading-color, #1E293B);
+	border-radius: 9999px;
+	border-right-color: transparent;
+	border-top-color: transparent;
+	content: "";
+	display: block;
+	height: 14px;
+	position: absolute;
+	width: 14px;
+	left: calc(50% - 7px);
+	top: calc(50% - 10px);
+	animation-name: spin;
+	animation-duration: 1000ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.acui-button-primary {
+	background-color: var(--ac-primary-color);
+	color: #fff;
+
+	&:hover, &:active, &:focus {
+		background-color: var(--ac-primary-color-hover);
+		color: #fff;
+	}
+
+	&.is-loading:before {
+		border: 2px solid var(--acui-loading-color, #fff);
+		border-right-color: transparent;
+		border-top-color: transparent;
+	}
+}
+
+.acui-button-pink {
+	background-color: var(--ac-pink-color);
+	border-color: transparent;
+	color: #fff;
+
+	&:hover, &:active, &:focus {
+		background-color: var(--ac-pink-color);
+		color: #fff;
+	}
+}
+
+.acui-button-default {
+	&:hover, &:active, &:focus {
+		color: #1E293B;
+		background-color: #F1F5F9;
+	}
+}

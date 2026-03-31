@@ -1,0 +1,162 @@
+.acp-column-setting {
+	&__label__ {
+		-webkit-font-smoothing: antialiased;
+	}
+
+	&__value {
+		max-width: 620px;
+	}
+
+	.acp-column-setting {
+		padding-left: 0;
+	}
+
+	&.-type {
+		border-bottom: 1px solid #CBD5E1;
+		padding-bottom: 20px;
+		margin-bottom: 30px;
+	}
+
+}
+
+.acp-column-setting__value {
+	.acp-column-setting__subsettings:nth-child(2):has(div){
+		padding-top: 15px;
+	}
+}
+
+
+.acp-column-setting[data-setting=label] {
+	.acui-input-group-text {
+		color: #ccc;
+		transition: color .2s;
+		cursor: pointer;
+		::selection {
+			color: red;
+		}
+		&:hover {
+			color: #555;
+		}
+	}
+
+	// Modal
+	.ac-modal.-iconpicker {
+		h3 {
+			font-weight: 300;
+			margin: 30px 0 10px 0;
+			font-size: 16px;
+		}
+		.acp-iconpicker__icon {
+			cursor: pointer;
+			width: 45px;
+			height: 45px;
+			display: inline-flex;
+			align-items: center;
+			background: none;
+			border: none;
+
+			.dashicons {
+				font-size: 28px;
+			}
+
+			&:hover {
+				color: var(--ac-primary-color-hover)
+			}
+		}
+		.ac-modal__dialog__footer {
+			padding: 0;
+		}
+		.acp-iconmodal-footer {
+			display: flex;
+			&__input {
+				display: flex;
+				align-items: center;
+				flex-grow: 1;
+				padding: 10px;
+			}
+			&__selection {
+				width: 60px;
+				background: #e5e5e5;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				.dashicons {
+					font-size: 30px;
+					width: 30px;
+					height: 30px;
+				}
+			}
+			&__action {
+				padding: 10px;
+				display: flex;
+				align-items: center;
+			}
+
+
+			input[type=search] {
+				border: 1px solid #666;
+			}
+			button {
+				padding-left: 30px;
+				padding-right: 30px;
+			}
+		}
+	}
+}
+
+
+// Subsettings
+.ac-column-settings.-subsettings {
+	padding-top:0;
+	padding-bottom: 0;
+
+	.acp-column-setting {
+		flex-direction: column;
+
+		.acp-column-setting__label {
+			padding: 10px 0;
+		}
+		.acp-column-setting__value {
+			padding: 0;
+		}
+	}
+}
+
+.acp-column-setting[data-setting="hidden"] {
+	display: none;
+}
+
+.ac-modal.-iconpicker {
+
+	.ac-modal__dialog__content {
+		max-height: calc(100vh - 260px);
+		overflow-y: auto!important;
+	}
+
+	.ac-ipicker__icon {
+		padding:0;
+		width: 49px;
+		height: 49px;
+		white-space: nowrap;
+		text-align: center;
+		background: none;
+		border: none;
+		cursor: pointer;
+
+		&:hover {
+            color: var(--ac-primary-color-hover);
+        }
+
+		&.active {
+			background: var(--ac-primary-color);
+			color: #fff;
+		}
+
+		span {
+			width: 49px;
+			height: 49px;
+			line-height: 49px;
+		}
+	}
+
+}

@@ -1,0 +1,47 @@
+.acui-input-group {
+	border-radius: 5px;
+	display: flex;
+	border: 1px solid #CBD5E1;
+
+	> * {
+		display: block;
+	}
+
+	&.-numeric {
+		display: inline-flex;
+		input {
+			width: 180px;
+		}
+	}
+}
+
+.acui-input-group input {
+	background: #fff;
+	flex-grow: 1;
+	height: 42px;
+	padding-left: 13px;
+	border: 1px solid transparent;
+	width: 1%;
+}
+
+.acui-input-group select.acui-input-group-select {
+	appearance: none;
+	background: none;
+	padding: 0;
+	border: none;
+	outline: none;
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+}
+
+.acui-input-group-text {
+	flex-grow: 0;
+	display: flex;
+	align-items: center;
+	padding: 0 10px;
+	font-size: 10px;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	text-transform: uppercase;
+}

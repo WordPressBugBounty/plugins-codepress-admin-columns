@@ -1,0 +1,133 @@
+import {initAcServices} from "./helpers/admin-columns";
+import ColumnsPage from "./columns/components/ColumnsPage.svelte";
+import {
+    columnTypesStore,
+    currentListId,
+    currentListKey,
+    debugMode,
+    favoriteListKeysStore,
+    hasUsagePermissions,
+    initialListScreenData,
+    isInitializingColumnSettings,
+    listScreenDataHasChanges,
+    listScreenDataStore,
+    listScreenIsReadOnly,
+    listScreenIsStored,
+    showColumnInfo
+} from "./columns/store";
+import {getColumnSettingsConfig} from "./columns/utils/global";
+import {initListScreenHeadings, initUninitializedListScreens} from "./columns/utils/listscreen-initialize";
+import ColumnPageBridge from "./columns/utils/page-bridge";
+import ListScreenSections from "./columns/store/list-screen-sections";
+import DeleteViewButton from "./columns/components/DeleteViewButton.svelte";
+import {get} from "svelte/store";
+
+const AcServices = initAcServices();
+const localConfig = getColumnSettingsConfig();
+
+require('./columns/init/setting-types.ts');
+
+const debounce = <T extends (...args: any[]) => void>(
+    fn: T,
+    delay: number
+): (...args: Parameters<T>) => void => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    return (...args: Parameters<T>): void => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn(...args), delay);
+    };
+}
+
+currentListKey.subscribe((d) => {
+    const url = new URL(window.location.href);
+
+    url.searchParams.set('list_screen', d);
+
+    window.history.replaceState(null, '', url);
+})
+
+currentListId.subscribe((d) => {
+    const url = new URL(window.location.href);
+
+    url.searchParams.set('layout_id', d);
+
+    window.history.replaceState(null, '', url);
+})
+
+
+const checkForChanges = debounce(() => {
+    const orig = get(initialListScreenData);
+    const current = get(listScreenDataStore);
+    const isInitializing = get(isInitializingColumnSettings);
+    const isStored = get(listScreenIsStored);
+
+    if (isInitializing || !isStored) {
+        return;
+    }
+
+    listScreenDataHasChanges.set(JSON.stringify(orig) !== JSON.stringify(current));
+}, 300);
+
+listScreenDataStore.subscribe(() => {
+    checkForChanges();
+})
+
+window.addEventListener("beforeunload", function (event) {
+    const hasChanges = get(listScreenDataHasChanges);
+    const readOnly = get(listScreenIsReadOnly);
+    if (hasChanges && !readOnly) {
+        event.preventDefault();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('admin-columns__columns')
+
+    currentListId.set(localConfig.list_id)
+    currentListKey.set(localConfig.list_key);
+    columnTypesStore.set([]);
+    hasUsagePermissions.set(true)
+    debugMode.set(false);
+    favoriteListKeysStore.set(localConfig.menu_items_favorites);
+
+    const pageBridge = new ColumnPageBridge();
+
+    const deleteButtonElement = document.createElement('div');
+    const deleteViewButton = new DeleteViewButton({
+        target: deleteButtonElement,
+        props: {
+            listScreenData: listScreenDataStore,
+            readonlyListScreen: listScreenIsReadOnly,
+            isSaved: listScreenIsStored
+        }
+    });
+
+    deleteViewButton.$on('deleteView', () => {
+        currentListId.set('0');
+    });
+
+    ListScreenSections.registerSection('header_bar', deleteButtonElement);
+
+    AcServices.registerService('ColumnPage', pageBridge);
+
+    const cpacElement = document.querySelector('#cpac');
+    if (cpacElement) {
+        new ColumnsPage({
+            target: cpacElement,
+            props: {
+                menu: localConfig.menu_items,
+                openedGroups: localConfig.menu_groups_opened
+            }
+        });
+    }
+
+    if (localConfig.uninitialized_list_screens !== null) {
+        initUninitializedListScreens(localConfig.uninitialized_list_screens, localConfig.list_key);
+    }
+    initListScreenHeadings();
+
+
+    showColumnInfo.set(localConfig.show_column_info);
+
+});

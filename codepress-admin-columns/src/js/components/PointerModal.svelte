@@ -1,0 +1,27 @@
+<script lang="ts">
+    import {Callback} from "webpack-cli";
+
+    export let content = '';
+    export let position = '';
+    let onElement = false;
+
+    export let closeHandler: Callback<any>;
+
+    export const isOnElement = (): boolean => {
+        return onElement;
+    }
+
+    const checkLeave = () => {
+        onElement = false;
+        closeHandler();
+    }
+
+</script>
+
+<div class="ac-pointer-modal -{position} " on:mouseenter={()=> onElement = true} on:mouseleave={() => checkLeave()} role="none">
+	<div class="ac-pointer-modal__arrow" data-pos={position}>
+	</div>
+	<div class="ac-pointer-modal__content">
+		{@html content}
+	</div>
+</div>
