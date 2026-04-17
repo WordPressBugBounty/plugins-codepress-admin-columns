@@ -1,5 +1,8 @@
 <?php
 
+use AC\Acf\ColumnMatcher;
+use AC\Acf\FieldGroupCache;
+use AC\Acf\Service\FieldSettings;
 use AC\Admin;
 use AC\Admin\PageRequestHandlers;
 use AC\AdminColumns;
@@ -65,11 +68,11 @@ return [
     Admin\Banner\BannerContextResolver::class => static function (ContainerInterface $container): Admin\Banner\BannerContextResolver {
         $contexts = [];
 
-        if (class_exists('WooCommerce', false)) {
+        if (AC\WooCommerce::is_active()) {
             $contexts[] = $container->get(Admin\Banner\Context\WooCommerce::class);
         }
 
-        if (class_exists('acf', false)) {
+        if (AC\Acf::is_active()) {
             $contexts[] = $container->get(Admin\Banner\Context\Acf::class);
         }
 
@@ -81,4 +84,12 @@ return [
     PluginUpdate::class                       => autowire()
         ->constructorParameter(0, get(AdminColumns::class))
         ->constructorParameter(1, new Site('upgrade-to-ac-version-%s')),
+    FieldSettings::class                      => static function (
+        Storage $storage,
+        FieldGroupCache $field_group_cache,
+        ColumnMatcher $column_matcher,
+        AdminColumns $plugin
+    ): FieldSettings {
+        return new FieldSettings($storage, $field_group_cache, $column_matcher, $plugin->get_location());
+    },
 ];

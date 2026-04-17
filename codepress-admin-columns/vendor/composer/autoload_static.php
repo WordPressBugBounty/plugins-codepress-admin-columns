@@ -50,16 +50,17 @@ class ComposerStaticInitAdminColumns
     );
 
     public static $classMap = array (
+        'AC\\Acf' => __DIR__ . '/../..' . '/classes/Acf.php',
         'AC\\Acf\\AcfColumnFactory' => __DIR__ . '/../..' . '/classes/Acf/AcfColumnFactory.php',
         'AC\\Acf\\ColumnMatcher' => __DIR__ . '/../..' . '/classes/Acf/ColumnMatcher.php',
-        'AC\\Acf\\FieldCount' => __DIR__ . '/../..' . '/classes/Acf/FieldCount.php',
+        'AC\\Acf\\FieldGroupCache' => __DIR__ . '/../..' . '/classes/Acf/FieldGroupCache.php',
         'AC\\Acf\\FieldGroup\\Location\\Comment' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/Location/Comment.php',
         'AC\\Acf\\FieldGroup\\Location\\Media' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/Location/Media.php',
         'AC\\Acf\\FieldGroup\\Location\\Post' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/Location/Post.php',
         'AC\\Acf\\FieldGroup\\Location\\Taxonomy' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/Location/Taxonomy.php',
         'AC\\Acf\\FieldGroup\\Location\\User' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/Location/User.php',
         'AC\\Acf\\FieldGroup\\Query' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/Query.php',
-        'AC\\Acf\\FieldGroup\\TableScreenResolver' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/TableScreenResolver.php',
+        'AC\\Acf\\FieldGroup\\QueryFactory' => __DIR__ . '/../..' . '/classes/Acf/FieldGroup/QueryFactory.php',
         'AC\\Acf\\RequestHandler\\FieldSettingsAddColumn' => __DIR__ . '/../..' . '/classes/Acf/RequestHandler/FieldSettingsAddColumn.php',
         'AC\\Acf\\Service\\DateSaveFormat' => __DIR__ . '/../..' . '/classes/Acf/Service/DateSaveFormat.php',
         'AC\\Acf\\Service\\FieldSettings' => __DIR__ . '/../..' . '/classes/Acf/Service/FieldSettings.php',
@@ -561,6 +562,7 @@ class ComposerStaticInitAdminColumns
         'AC\\Helper\\Html' => __DIR__ . '/../..' . '/classes/Helper/Html.php',
         'AC\\Helper\\Icon' => __DIR__ . '/../..' . '/classes/Helper/Icon.php',
         'AC\\Helper\\Image' => __DIR__ . '/../..' . '/classes/Helper/Image.php',
+        'AC\\Helper\\Mbstring' => __DIR__ . '/../..' . '/classes/Helper/Mbstring.php',
         'AC\\Helper\\Media' => __DIR__ . '/../..' . '/classes/Helper/Media.php',
         'AC\\Helper\\Menu' => __DIR__ . '/../..' . '/classes/Helper/Menu.php',
         'AC\\Helper\\Network' => __DIR__ . '/../..' . '/classes/Helper/Network.php',
@@ -1087,6 +1089,7 @@ class ComposerStaticInitAdminColumns
         'AC\\Vendor\\Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
         'AC\\View' => __DIR__ . '/../..' . '/classes/View.php',
         'AC\\View\\Embed\\Video' => __DIR__ . '/../..' . '/classes/View/Embed/Video.php',
+        'AC\\WooCommerce' => __DIR__ . '/../..' . '/classes/WooCommerce.php',
         'AC\\WpListTableFactory' => __DIR__ . '/../..' . '/classes/WpListTableFactory.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );

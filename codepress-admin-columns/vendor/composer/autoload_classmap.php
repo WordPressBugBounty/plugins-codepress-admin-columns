@@ -6,16 +6,17 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AC\\Acf' => $baseDir . '/classes/Acf.php',
     'AC\\Acf\\AcfColumnFactory' => $baseDir . '/classes/Acf/AcfColumnFactory.php',
     'AC\\Acf\\ColumnMatcher' => $baseDir . '/classes/Acf/ColumnMatcher.php',
-    'AC\\Acf\\FieldCount' => $baseDir . '/classes/Acf/FieldCount.php',
+    'AC\\Acf\\FieldGroupCache' => $baseDir . '/classes/Acf/FieldGroupCache.php',
     'AC\\Acf\\FieldGroup\\Location\\Comment' => $baseDir . '/classes/Acf/FieldGroup/Location/Comment.php',
     'AC\\Acf\\FieldGroup\\Location\\Media' => $baseDir . '/classes/Acf/FieldGroup/Location/Media.php',
     'AC\\Acf\\FieldGroup\\Location\\Post' => $baseDir . '/classes/Acf/FieldGroup/Location/Post.php',
     'AC\\Acf\\FieldGroup\\Location\\Taxonomy' => $baseDir . '/classes/Acf/FieldGroup/Location/Taxonomy.php',
     'AC\\Acf\\FieldGroup\\Location\\User' => $baseDir . '/classes/Acf/FieldGroup/Location/User.php',
     'AC\\Acf\\FieldGroup\\Query' => $baseDir . '/classes/Acf/FieldGroup/Query.php',
-    'AC\\Acf\\FieldGroup\\TableScreenResolver' => $baseDir . '/classes/Acf/FieldGroup/TableScreenResolver.php',
+    'AC\\Acf\\FieldGroup\\QueryFactory' => $baseDir . '/classes/Acf/FieldGroup/QueryFactory.php',
     'AC\\Acf\\RequestHandler\\FieldSettingsAddColumn' => $baseDir . '/classes/Acf/RequestHandler/FieldSettingsAddColumn.php',
     'AC\\Acf\\Service\\DateSaveFormat' => $baseDir . '/classes/Acf/Service/DateSaveFormat.php',
     'AC\\Acf\\Service\\FieldSettings' => $baseDir . '/classes/Acf/Service/FieldSettings.php',
@@ -517,6 +518,7 @@ return array(
     'AC\\Helper\\Html' => $baseDir . '/classes/Helper/Html.php',
     'AC\\Helper\\Icon' => $baseDir . '/classes/Helper/Icon.php',
     'AC\\Helper\\Image' => $baseDir . '/classes/Helper/Image.php',
+    'AC\\Helper\\Mbstring' => $baseDir . '/classes/Helper/Mbstring.php',
     'AC\\Helper\\Media' => $baseDir . '/classes/Helper/Media.php',
     'AC\\Helper\\Menu' => $baseDir . '/classes/Helper/Menu.php',
     'AC\\Helper\\Network' => $baseDir . '/classes/Helper/Network.php',
@@ -1043,6 +1045,7 @@ return array(
     'AC\\Vendor\\Psr\\Container\\NotFoundExceptionInterface' => $vendorDir . '/psr/container/src/NotFoundExceptionInterface.php',
     'AC\\View' => $baseDir . '/classes/View.php',
     'AC\\View\\Embed\\Video' => $baseDir . '/classes/View/Embed/Video.php',
+    'AC\\WooCommerce' => $baseDir . '/classes/WooCommerce.php',
     'AC\\WpListTableFactory' => $baseDir . '/classes/WpListTableFactory.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );
