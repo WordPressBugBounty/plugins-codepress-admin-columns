@@ -11,19 +11,19 @@ use AC\Type\Value;
 
 class TranslatedRoles implements AC\Formatter
 {
-
     public function format(Value $value)
     {
         $user = get_userdata($value->get_id());
 
-        if ( ! $user) {
+        if (! $user) {
             throw ValueNotFoundException::from_id($value->get_id());
         }
 
         $roles = [];
+        $role_names = AC\Helper\UserRoles::create()->find_role_names($user);
 
         foreach (AC\Helper\UserRoles::create()->find_all() as $role) {
-            if ( ! in_array($role->get_name(), $user->roles, true)) {
+            if (! in_array($role->get_name(), $role_names, true)) {
                 continue;
             }
 

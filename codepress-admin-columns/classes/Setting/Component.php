@@ -12,22 +12,21 @@ use InvalidArgumentException;
 
 class Component
 {
-
     private ?string $label;
 
     private ?string $description;
 
     private ?Input $input;
 
-    private ?FormatterCollection $formatters;
+    private FormatterCollection $formatters;
 
     private ?Children $children;
 
     private $conditions;
 
-    private ?AttributeCollection $attributes;
+    private AttributeCollection $attributes;
 
-    private ?string $type;
+    private string $type;
 
     public function __construct(
         ?string $label = null,
@@ -72,8 +71,8 @@ class Component
 
     public function get_label(): string
     {
-        if ( ! $this->has_label()) {
-            throw new InvalidArgumentException();
+        if ($this->label === null) {
+            throw new InvalidArgumentException('No label provided.');
         }
 
         return $this->label;
@@ -86,8 +85,8 @@ class Component
 
     public function get_description(): string
     {
-        if ( ! $this->has_description()) {
-            throw new InvalidArgumentException();
+        if ($this->description === null) {
+            throw new InvalidArgumentException('No description provided');
         }
 
         return $this->description;
@@ -100,8 +99,8 @@ class Component
 
     public function get_input(): Input
     {
-        if ( ! $this->has_input()) {
-            throw new InvalidArgumentException();
+        if ($this->input === null) {
+            throw new InvalidArgumentException('No input provided.');
         }
 
         return $this->input;
@@ -119,8 +118,8 @@ class Component
 
     public function get_children(): Children
     {
-        if ( ! $this->has_children()) {
-            throw new InvalidArgumentException();
+        if ($this->children === null) {
+            throw new InvalidArgumentException('No children provided.');
         }
 
         return $this->children;

@@ -9,7 +9,6 @@ use AC\Type\Value;
 
 class PregReplace implements Formatter
 {
-
     private array $patterns = [];
 
     private array $replacements = [];
@@ -30,6 +29,11 @@ class PregReplace implements Formatter
     public function replace_new_line(string $replacement = ' '): self
     {
         return $this->add_pattern('/(\r\n|\r|\n)/', $replacement);
+    }
+
+    public function replace_non_breaking_space(string $replacement = ' '): self
+    {
+        return $this->add_pattern('/&nbsp;|&#160;/i', $replacement);
     }
 
     public function replace_tabs(string $replacement = ' '): self
