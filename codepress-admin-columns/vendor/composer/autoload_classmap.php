@@ -93,6 +93,7 @@ return array(
     'AC\\Ajax\\Handler' => $baseDir . '/classes/Ajax/Handler.php',
     'AC\\Ajax\\NullHandler' => $baseDir . '/classes/Ajax/NullHandler.php',
     'AC\\ApplyFilter\\QueryTotalNumber' => $baseDir . '/classes/ApplyFilter/QueryTotalNumber.php',
+    'AC\\ApplyFilter\\RenderSanitize' => $baseDir . '/classes/ApplyFilter/RenderSanitize.php',
     'AC\\ApplyFilter\\ValidAudioMimetypes' => $baseDir . '/classes/ApplyFilter/ValidAudioMimetypes.php',
     'AC\\ApplyFilter\\ValidVideoMimetypes' => $baseDir . '/classes/ApplyFilter/ValidVideoMimetypes.php',
     'AC\\ArrayIterator' => $baseDir . '/classes/ArrayIterator.php',

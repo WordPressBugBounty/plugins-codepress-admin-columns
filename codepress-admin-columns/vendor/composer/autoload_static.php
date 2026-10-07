@@ -137,6 +137,7 @@ class ComposerStaticInitAdminColumns
         'AC\\Ajax\\Handler' => __DIR__ . '/../..' . '/classes/Ajax/Handler.php',
         'AC\\Ajax\\NullHandler' => __DIR__ . '/../..' . '/classes/Ajax/NullHandler.php',
         'AC\\ApplyFilter\\QueryTotalNumber' => __DIR__ . '/../..' . '/classes/ApplyFilter/QueryTotalNumber.php',
+        'AC\\ApplyFilter\\RenderSanitize' => __DIR__ . '/../..' . '/classes/ApplyFilter/RenderSanitize.php',
         'AC\\ApplyFilter\\ValidAudioMimetypes' => __DIR__ . '/../..' . '/classes/ApplyFilter/ValidAudioMimetypes.php',
         'AC\\ApplyFilter\\ValidVideoMimetypes' => __DIR__ . '/../..' . '/classes/ApplyFilter/ValidVideoMimetypes.php',
         'AC\\ArrayIterator' => __DIR__ . '/../..' . '/classes/ArrayIterator.php',
